@@ -1,0 +1,12 @@
+SELECT
+    ISSUE_ID,
+    ISSUE_NUMBER,
+    AUTHOR_ID,
+    REPOSITORY,
+    CREATED_AT,
+    UPDATED_AT,
+    CLOSED_AT,
+    DATEDIFF('day', CREATED_AT, CLOSED_AT) DAYS_TO_CLOSE,
+    STATE,
+    COMMENTS_COUNT
+FROM {{ ref("int_git_issues") }}

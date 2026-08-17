@@ -1,0 +1,81 @@
+version: 2
+
+models:
+
+  - name: dim_git_author
+    description: "Dimension containing GitHub issue and pull request author information, including each author's unique ID and login."
+    columns:
+      - name: AUTHOR_ID
+        description: "Unique identifier for the GitHub user who authored the issue or pull request."
+        tests:
+          - unique
+          - not_null
+
+      - name: AUTHOR_LOGIN
+        description: "GitHub username associated with the author of the issue or pull request."
+        tests:
+          - not_null
+
+
+  - name: dim_git_issue_labels
+    description: "Label association model containing one row for each label assigned to a GitHub issue or pull request."
+    columns:
+      - name: ISSUE_ID
+        description: "Unique identifier of the GitHub issue or pull request associated with the label."
+        tests:
+          - not_null
+
+      - name: LABEL_ID
+        description: "Unique identifier for the GitHub label definition."
+        tests:
+          - not_null
+
+      - name: LABEL_NAME
+        description: "Name of the label assigned to the issue or pull request."
+
+      - name: LABEL_COLOR
+        description: "Hexadecimal color value associated with the GitHub label."
+
+      - name: LABEL_DESCRIPTION
+        description: "Description of the GitHub label, when provided."
+
+      - name: ISSUE_ID
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('fact_git_issues')
+                field: ISSUE_ID
+
+
+  - name: fct_git_issues
+    description: "Fact table containing one row per GitHub issue or pull request, including issue activity, timestamps, author information, state, and comment counts."
+    columns:
+      - name: ISSUE_ID
+        description: "Unique identifier for the GitHub issue or pull request."
+        tests:
+          - unique
+          - not_null
+
+      - name: ISSUE_NUMBER
+        description: "Issue or pull request number within the GitHub repository."
+
+      - name: AUTHOR_ID
+        description: "Unique identifier for the GitHub user who created the issue or pull request."
+
+      - name: CREATED_AT
+        description: "Timestamp indicating when the issue or pull request was created."
+
+      - name: UPDATED_AT
+        description: "Timestamp indicating when the issue or pull request was last updated."
+
+      - name: CLOSED_AT
+        description: "Timestamp indicating when the issue or pull request was closed. Null when the issue remains open."
+
+      - name: DAYS_TO_CLOSE
+        description: "Number of days between issue creation and closure. Null for issues that remain open."
+
+      - name: STATE
+        description: "Current state of the issue or pull request, such as open or closed."
+
+      - name: COMMENTS_COUNT
+        description: "Number of comments associated with the issue or pull request."

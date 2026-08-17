@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: init_git_issues
+    description: "Cleaned GitHub issues and pull requests."
+    columns:
+      - name: ISSUE_ID
+        description: "Unique identifier for the GitHub issue or pull request."
+        tests:
+          - unique
+          - not_null
+
+
+  - name: git_issue_labels
+    description:  "One row per label assigned to a GitHub issue or pull request, with label metadata extracted from the source JSON."
+    columns:
+      - name: LABEL_ID
+        description: "GitHub's unique identifier for the label definition. The same label can be associated with multiple issues."
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ISSUE_ID
+            - LABEL_ID
+
+  

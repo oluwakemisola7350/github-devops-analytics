@@ -1,0 +1,23 @@
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+profiles.yml
+.user.yml
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# dbt generated files
+target/
+dbt_packages/
+logs/
+
+# OS / editor files
+.DS_Store
+.vscode/
+.idea/

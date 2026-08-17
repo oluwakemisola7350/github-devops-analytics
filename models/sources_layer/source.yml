@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: GIT_SCHEMA
+    database: GIT_DB
+    schema: GIT_SCHEMA
+    description: "Raw GitHub API records ingested by the Python pipeline and stored in Snowflake for downstream dbt transformations."
+    tables:
+      - name: GIT_RAW_JSON
+        description: "RAW_JSON"
+        columns:
+          - name: INGESTED_AT
+            description: "Timestamp indicating when the GitHub API response was ingested into the Snowflake raw layer."
+            tests:
+              - not_null
+
+          - name: ENDPOINT
+            description: "GitHub REST API endpoint from which the record was retrieved, such as the issues endpoint."
+            tests:
+              - not_null
+
+          - name: REPOSITORY
+            description: "GitHub repository associated with the ingested record, represented as owner/repository."
+            tests:
+              - not_null
+
+          - name: DATA
+            description: "Raw JSON payload returned by the GitHub API for the individual record."
+            tests:
+              - not_null
+

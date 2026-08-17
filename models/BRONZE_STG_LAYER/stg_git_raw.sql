@@ -1,0 +1,28 @@
+SELECT
+    INGESTED_AT,
+    ENDPOINT,
+    REPOSITORY,
+
+    DATA:id::NUMBER AS ISSUE_ID,
+    DATA:number::NUMBER AS ISSUE_NUMBER,
+    DATA:title::STRING AS TITLE,
+    DATA:body::STRING AS BODY,
+    DATA:state::STRING AS STATE,
+    DATA:state_reason::STRING AS STATE_REASON,
+
+    DATA:created_at::TIMESTAMP_TZ AS CREATED_AT,
+    DATA:updated_at::TIMESTAMP_TZ AS UPDATED_AT,
+    DATA:closed_at::TIMESTAMP_TZ AS CLOSED_AT,
+
+    DATA:comments::NUMBER AS COMMENTS_COUNT,
+
+    DATA:user:login::STRING AS AUTHOR_LOGIN,
+    DATA:user:id::NUMBER AS AUTHOR_ID,
+
+    DATA:labels AS LABELS,
+    DATA:reactions AS REACTIONS,
+    DATA:pull_request AS PULL_REQUEST
+
+FROM {{ source('GIT_SCHEMA', 'GIT_RAW_JSON') }}
+WHERE ENDPOINT = 'issues'
+

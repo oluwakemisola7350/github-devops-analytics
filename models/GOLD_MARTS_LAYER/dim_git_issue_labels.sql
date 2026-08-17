@@ -1,0 +1,8 @@
+SELECT 
+  ISSUE_ID,
+    f.VALUE:id::NUMBER LABEL_ID,
+    f.VALUE:name::STRING LABEL_NAME,
+    f.VALUE:color::STRING LABEL_COLOR,
+    f.VALUE:description::STRING LABEL_DESCRIPTION
+  FROM {{ ref("stg_git_raw") }},
+    LATERAL FLATTEN(INPUT => LABELS) f
